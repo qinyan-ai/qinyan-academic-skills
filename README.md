@@ -42,33 +42,111 @@
 
 ## 快速开始
 
-### 方式一：一键安装全部 Skills
+### 方式一：一键 Bash 命令安装（推荐，无需 clone）
 
+无需手动克隆仓库，一条命令即可远程安装：
+
+**安装全部 177 个 Skills：**
 ```bash
-git clone https://github.com/LeonChaoX/qinyan-academic-skills.git
-cp -r qinyan-academic-skills/skills/*/* ~/.claude/skills/
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash
 ```
 
-### 方式二：按分类安装
-
+**安装某个分类（按编号）：**
 ```bash
-git clone https://github.com/LeonChaoX/qinyan-academic-skills.git
+# 安装 01-论文检索与文献管理（11个skills）
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --category 01
 
-# 只安装论文检索相关 Skills
-cp -r qinyan-academic-skills/skills/01-论文检索与文献管理/* ~/.claude/skills/
+# 安装 05-生物信息与基因组学（21个skills）
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -c 05
 
-# 只安装生物信息相关 Skills
-cp -r qinyan-academic-skills/skills/05-生物信息与基因组学/* ~/.claude/skills/
+# 安装 09-机器学习与人工智能（14个skills）
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -c 09
 ```
 
-### 方式三：安装单个 Skill
-
+**安装单个 Skill：**
 ```bash
 # 安装学术论文搜索
-cp -r qinyan-academic-skills/skills/01-论文检索与文献管理/academic-paper-search ~/.claude/skills/
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --skill academic-paper-search
 
-# 安装论文演示文稿生成
-cp -r qinyan-academic-skills/skills/03-学术演示与可视化/paper-slide-deck ~/.claude/skills/
+# 安装单细胞分析 scanpy
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -s scanpy
+
+# 安装论文自动生成PPT
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -s paper-slide-deck
+
+# 安装研究计划撰写
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -s research-proposal
+```
+
+**安装到其他工具（Cursor / Codex / Gemini CLI）：**
+```bash
+# 安装全部到 Cursor
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --tool cursor
+
+# 安装生物信息分类到 Gemini CLI
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -c 05 --tool gemini
+```
+
+**安装到当前项目（而非全局）：**
+```bash
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --project
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --project -s scanpy
+```
+
+**搜索和浏览 Skills：**
+```bash
+# 列出所有分类
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --list
+
+# 列出全部 Skills
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --list-skills
+
+# 搜索含 "蛋白质" 的 Skills
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --search 蛋白质
+
+# 搜索含 "drug" 的 Skills
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --search drug
+```
+
+**查看帮助：**
+```bash
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --help
+```
+
+---
+
+### 方式二：Git Clone 手动安装
+
+```bash
+git clone https://github.com/LeonChaoX/qinyan-academic-skills.git
+cd qinyan-academic-skills
+
+# 安装全部
+bash install.sh
+
+# 安装某个分类
+bash install.sh --category 01
+
+# 安装单个 skill
+bash install.sh --skill scanpy
+
+# 搜索
+bash install.sh --search 论文
+```
+
+### 方式三：直接复制目录
+
+```bash
+git clone https://github.com/LeonChaoX/qinyan-academic-skills.git
+
+# 复制全部
+cp -r qinyan-academic-skills/skills/*/* ~/.claude/skills/
+
+# 复制某个分类
+cp -r qinyan-academic-skills/skills/01-论文检索与文献管理/* ~/.claude/skills/
+
+# 复制单个 skill
+cp -r qinyan-academic-skills/skills/01-论文检索与文献管理/academic-paper-search ~/.claude/skills/
 ```
 
 ### 支持的工具
