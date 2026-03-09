@@ -1,88 +1,54 @@
-#!/usr/bin/env bash
-# Academic Paper Search Skill - One-command installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/LeonChaoX/academic-paper-search-skill/main/install.sh | bash
-# Or: bash install.sh [--project]
-#
-# Options:
-#   --project    Install to current project's .claude/skills/ instead of global ~/.claude/skills/
+#!/bin/bash
+# 沁言学术科研论文 Skills 库 - 一键安装脚本
 
-set -euo pipefail
+set -e
 
-SKILL_NAME="academic-paper-search"
-REPO_URL="https://github.com/LeonChaoX/academic-paper-search-skill.git"
+REPO_URL="https://github.com/LeonChaoX/qinyan-academic-skills.git"
+TEMP_DIR=$(mktemp -d)
 
-# Color output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-info()  { echo -e "${BLUE}[INFO]${NC} $*"; }
-ok()    { echo -e "${GREEN}[OK]${NC} $*"; }
-warn()  { echo -e "${YELLOW}[WARN]${NC} $*"; }
-error() { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
-
-# Determine install location
-if [ "${1:-}" = "--project" ]; then
-    INSTALL_DIR=".claude/skills/${SKILL_NAME}"
-    info "Installing to project directory: ${INSTALL_DIR}"
+# 检测安装目标
+if [ "$1" = "--project" ]; then
+    INSTALL_DIR=".claude/skills"
+    echo "安装到当前项目: $INSTALL_DIR"
 else
-    INSTALL_DIR="${HOME}/.claude/skills/${SKILL_NAME}"
-    info "Installing to global directory: ${INSTALL_DIR}"
+    INSTALL_DIR="$HOME/.claude/skills"
+    echo "全局安装到: $INSTALL_DIR"
 fi
 
-# Check prerequisites
-command -v git >/dev/null 2>&1 || error "git is required but not installed."
-command -v curl >/dev/null 2>&1 || error "curl is required but not installed."
-command -v python3 >/dev/null 2>&1 || error "python3 is required but not installed."
-
-# Clean up existing installation
-if [ -d "$INSTALL_DIR" ]; then
-    warn "Existing installation found at ${INSTALL_DIR}"
-    warn "Updating..."
-    rm -rf "$INSTALL_DIR"
+# 支持 --category 参数选择分类安装
+if [ -n "$2" ]; then
+    CATEGORY="$2"
+    echo "仅安装分类: $CATEGORY"
 fi
 
-# Create parent directory
-mkdir -p "$(dirname "$INSTALL_DIR")"
+echo "正在克隆仓库..."
+git clone --depth 1 "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null
 
-# Clone repository
-info "Cloning skill from ${REPO_URL}..."
-git clone --depth 1 "$REPO_URL" "$INSTALL_DIR" 2>/dev/null
+mkdir -p "$INSTALL_DIR"
 
-# Make scripts executable
-chmod +x "$INSTALL_DIR"/scripts/*.sh
-
-# Remove git artifacts from install
-rm -rf "$INSTALL_DIR/.git"
-
-# Verify installation
-if [ -f "$INSTALL_DIR/SKILL.md" ]; then
-    ok "Skill installed successfully at: ${INSTALL_DIR}"
+if [ -n "$CATEGORY" ]; then
+    # 安装指定分类
+    if [ -d "$TEMP_DIR/repo/skills/$CATEGORY" ]; then
+        cp -r "$TEMP_DIR/repo/skills/$CATEGORY"/* "$INSTALL_DIR/"
+        echo "已安装分类 $CATEGORY 下的所有 Skills"
+    else
+        echo "错误: 未找到分类 '$CATEGORY'"
+        echo "可用分类:"
+        ls "$TEMP_DIR/repo/skills/"
+        rm -rf "$TEMP_DIR"
+        exit 1
+    fi
 else
-    error "Installation failed - SKILL.md not found"
+    # 安装全部
+    for category_dir in "$TEMP_DIR/repo/skills"/*/; do
+        cp -r "$category_dir"*/ "$INSTALL_DIR/" 2>/dev/null || true
+    done
+    echo "已安装全部 Skills"
 fi
 
-echo ""
-echo "=============================================="
-echo "  Academic Paper Search Skill Installed!"
-echo "=============================================="
-echo ""
-echo "Next steps:"
-echo ""
-echo "  1. Set your API token:"
-echo "     export ACADEMIC_API_TOKEN='your-bearer-token'"
-echo ""
-echo "  2. Add to your shell profile for persistence:"
-echo "     echo 'export ACADEMIC_API_TOKEN=\"your-token\"' >> ~/.bashrc"
-echo ""
-echo "  3. Verify connectivity:"
-echo "     curl -s http://47.95.10.101:9000/health"
-echo ""
-echo "  4. Start using in Claude Code / OpenClaw:"
-echo "     - \"Search papers about deep learning\""
-echo "     - \"Find SCI Q1 papers on medical imaging\""
-echo "     - \"Analyze this paper: Attention Is All You Need\""
-echo ""
-echo "=============================================="
+# 统计
+skill_count=$(find "$INSTALL_DIR" -name "SKILL.md" -maxdepth 2 | wc -l)
+echo "安装完成！共 $skill_count 个 Skills 已安装到 $INSTALL_DIR"
+
+# 清理
+rm -rf "$TEMP_DIR"
