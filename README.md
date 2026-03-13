@@ -108,6 +108,30 @@ curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/ma
 curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --search drug
 ```
 
+**检查更新与版本管理：**
+```bash
+# 检查已安装 Skills 是否有新版本
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --check-update
+
+# 更新全部已安装的 Skills
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --update
+
+# 更新单个 Skill
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --update -s scanpy
+
+# 更新某个分类
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --update -c 05
+
+# 强制更新（覆盖本地修改）
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --update --force
+
+# 查看已安装 Skills 的状态
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --status
+
+# 查看脚本版本
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --version
+```
+
 **查看帮助：**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --help
