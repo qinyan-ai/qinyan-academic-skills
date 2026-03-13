@@ -3,7 +3,7 @@
 [![Skills](https://img.shields.io/badge/Skills-177-brightgreen.svg)](#skills-分类目录)
 [![Categories](https://img.shields.io/badge/分类-17-blue.svg)](#skills-分类目录)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Works with](https://img.shields.io/badge/Works_with-Claude_Code_|_Cursor_|_Codex-blue.svg)](#快速开始)
+[![Works with](https://img.shields.io/badge/Works_with-Claude_Code_|_Cursor_|_Codex_|_OpenClaw-blue.svg)](#快速开始)
 
 一个面向学术科研的综合性 Skills 集合库，专门收集整理各种学术研究相关的 Agent Skills。所有用户和 Agent 都可以访问并一键安装使用。
 
@@ -78,13 +78,19 @@ curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/ma
 curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -s research-proposal
 ```
 
-**安装到其他工具（Cursor / Codex / Gemini CLI）：**
+**安装到其他工具（Cursor / Codex / Gemini CLI / OpenClaw）：**
 ```bash
 # 安装全部到 Cursor
 curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --tool cursor
 
 # 安装生物信息分类到 Gemini CLI
 curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- -c 05 --tool gemini
+
+# 安装全部到 OpenClaw
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --tool openclaw
+
+# 安装单个 Skill 到 OpenClaw
+curl -fsSL https://raw.githubusercontent.com/LeonChaoX/qinyan-academic-skills/main/install.sh | bash -s -- --tool openclaw -s scanpy
 ```
 
 **安装到当前项目（而非全局）：**
@@ -181,6 +187,7 @@ cp -r qinyan-academic-skills/skills/01-论文检索与文献管理/academic-pape
 | Cursor | `~/.cursor/skills/` | `.cursor/skills/` |
 | Codex | `~/.codex/skills/` | `.codex/skills/` |
 | Gemini CLI | `~/.gemini/skills/` | `.gemini/skills/` |
+| OpenClaw | `~/.openclaw/skills/` | `.openclaw/skills/` |
 
 ---
 
